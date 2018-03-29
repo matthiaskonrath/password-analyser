@@ -7,6 +7,8 @@
 import os
 import operator
 import pickle
+import re
+
 
 passwords = {}
 
@@ -44,32 +46,31 @@ def password_list_size(passwords):
     print(len(passwords))
 
 
-for item in range(0,9):
-    tmp_file_path = file_path + str(item)
-    for directory, subdirectories, files in os.walk(tmp_file_path):
-        for file in files:
-            print(os.path.join(directory, file))
-            with open(os.path.join(directory, file), "r") as file_handler:
-                for line in file_handler:
-                    try:
-                        tmp_password = split(delimiters, line)[1]
-                        store_password(passwords, tmp_password, counter)
-                    except IndexError:
-                        print(line)
 
-                    except Exception as exc:
-                        print(exc)
-                        print(line)
+for directory, subdirectories, files in os.walk(file_path):
+    for file in files:
+        print(os.path.join(directory, file))
+        with open(os.path.join(directory, file), "r") as file_handler:
+            for line in file_handler:
+                try:
+                    tmp_password = split(delimiters, line)[1]
+                    store_password(passwords, tmp_password, counter)
+                except IndexError:
+                    print(line)
 
+                except Exception as exc:
+                    print(exc)
+                    print(line)
 
 
 
-#passwords = pickle.load( open( "passwords.p", "rb" ) )
 
-print_top_10(passwords)
-password_list_size(passwords)
+#passwords = pickle.load(open("passwords.p", "rb"))
 
-pickle.dump( passwords, open( "passwords.p", "wb" ) )
+#print_top_10(passwords)
+#password_list_size(passwords)
+
+pickle.dump(passwords, open("passwords.pickle", "wb"))
 
 
 
